@@ -1,0 +1,7 @@
+{
+  "name": "Living with Snakes",
+  "description": "An educational platform designed to promote awareness and harmonious coexistence between the citizens of Freedomland and their native snake neighbors through identification tools and safety guides.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
