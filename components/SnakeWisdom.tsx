@@ -1,91 +1,108 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { getSnakeWisdom } from '../services/geminiService';
+import { Language, translations } from '../translations';
 
-const SnakeWisdom: React.FC = () => {
-  const [messages, setMessages] = useState<{role: 'user' | 'bot', text: string}[]>([
-    {role: 'bot', text: "Hello! I'm the Freedomland Snake Mentor. I'm here to answer any questions you have about our slithery friends. Ask me anything!"}
+interface Message {
+  role: 'user' | 'bot';
+  text: string;
+}
+
+const SnakeWisdom: React.FC<{ language: Language }> = ({ language }) => {
+  const t = translations[language];
+  const [messages, setMessages] = useState<Message[]>([
+    { role: 'bot', text: t.mentorGreeting }
   ]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isTyping]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || loading) return;
+  const handleSend = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (!input.trim() || isTyping) return;
 
-    const userMsg = input;
-    const newMessages = [...messages, { role: 'user' as const, text: userMsg }];
-    
+    const userMessage = input.trim();
     setInput('');
-    setMessages(newMessages);
-    setLoading(true);
+    setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
+    setIsTyping(true);
 
     try {
-      // Pass the entire history for context-aware responses
-      const response = await getSnakeWisdom(newMessages);
-      setMessages(prev => [...prev, { role: 'bot', text: response || "I'm having trouble thinking of an answer right now." }]);
-    } catch (err) {
-      setMessages(prev => [...prev, { role: 'bot', text: "Sorry, I lost my train of thought. Could you ask that again?" }]);
+      const history: Message[] = [...messages, { role: 'user', text: userMessage }];
+      const response = await getSnakeWisdom(history, language);
+      setMessages(prev => [...prev, { role: 'bot', text: response || "..." }]);
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'bot', text: "..." }]);
     } finally {
-      setLoading(false);
+      setIsTyping(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 py-8 h-[calc(100vh-160px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-xl flex flex-col flex-grow overflow-hidden border border-green-100">
-        <div className="p-4 bg-green-700 text-white flex items-center space-x-3">
-          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center border-2 border-green-400">
-             <i className="fa-solid fa-graduation-cap"></i>
-          </div>
-          <div>
-            <h2 className="font-bold">Snake Mentor</h2>
-            <p className="text-xs text-green-200">Promoting Harmony in Freedomland</p>
-          </div>
+    <div className="max-w-2xl mx-auto p-4 flex flex-col h-[calc(100vh-140px)] md:h-[650px]">
+      <div className="bg-white rounded-t-[32px] shadow-lg border-x border-t border-gray-100 p-6 flex items-center space-x-4">
+        <div className="w-14 h-14 bg-green-700 rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl shadow-green-900/20">
+          <i className="fa-solid fa-graduation-cap"></i>
         </div>
+        <div>
+          <h2 className="text-xl font-serif font-bold text-gray-900 leading-tight">Freedomland Snake Mentor</h2>
+          <p className="text-green-600 text-[10px] uppercase font-black tracking-[0.2em] mt-0.5">Expert Herpetologist</p>
+        </div>
+      </div>
 
-        <div ref={scrollRef} className="flex-grow p-4 overflow-y-auto space-y-4 bg-gray-50">
-          {messages.map((m, i) => (
-            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] p-4 rounded-2xl shadow-sm text-sm leading-relaxed ${
-                m.role === 'user' ? 'bg-green-600 text-white rounded-br-none' : 'bg-white text-gray-800 rounded-bl-none border border-gray-100'
-              }`}>
-                {m.text}
+      <div 
+        ref={scrollRef}
+        className="flex-grow bg-white border-x border-gray-50 overflow-y-auto p-6 space-y-6 scroll-smooth"
+      >
+        {messages.map((m, idx) => (
+          <div key={idx} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed ${
+              m.role === 'user' 
+                ? 'bg-green-700 text-white rounded-tr-none shadow-md' 
+                : 'bg-gray-50 text-gray-800 border border-gray-100 rounded-tl-none'
+            }`}>
+              {m.text}
+            </div>
+          </div>
+        ))}
+        {isTyping && (
+          <div className="flex justify-start">
+            <div className="bg-gray-50 p-4 rounded-3xl rounded-tl-none border border-gray-100">
+              <div className="flex space-x-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce [animation-delay:0.4s]"></div>
               </div>
             </div>
-          ))}
-          {loading && (
-            <div className="flex justify-start">
-              <div className="bg-white text-gray-400 p-4 rounded-2xl rounded-bl-none border border-gray-100 italic animate-pulse">
-                Mentor is typing...
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
 
-        <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-gray-100 flex gap-2">
+      <div className="bg-white rounded-b-[32px] border-x border-b border-gray-100 p-5 pt-2">
+        <form onSubmit={handleSend} className="flex items-center space-x-3">
           <input 
-            type="text" 
+            type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="E.g. How do I attract more garter snakes to my garden?"
-            className="flex-grow px-4 py-3 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition text-sm"
+            placeholder={t.askMentor}
+            className="flex-grow bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all shadow-inner"
           />
           <button 
             type="submit"
-            disabled={loading}
-            className="bg-green-700 text-white p-3 rounded-xl hover:bg-green-800 transition disabled:opacity-50"
+            disabled={!input.trim() || isTyping}
+            className="w-12 h-12 bg-green-900 text-white rounded-2xl flex items-center justify-center hover:bg-black transition active:scale-90 disabled:opacity-30 shadow-lg"
           >
-            <i className="fa-solid fa-paper-plane"></i>
+            <i className="fa-solid fa-paper-plane text-sm"></i>
           </button>
         </form>
+        <p className="text-[10px] text-gray-400 mt-4 text-center italic font-medium px-4">
+          {t.emergencyNote}
+        </p>
       </div>
     </div>
   );

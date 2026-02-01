@@ -1,8 +1,10 @@
 
 import React, { useState, useRef } from 'react';
 import { identifySnakeFromImage } from '../services/geminiService';
+import { Language, translations } from '../translations';
 
-const SnakeIDTool: React.FC = () => {
+const SnakeIDTool: React.FC<{ language: Language }> = ({ language }) => {
+  const t = translations[language];
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -27,14 +29,14 @@ const SnakeIDTool: React.FC = () => {
     setResult(null);
     setError(null);
     try {
-      const data = await identifySnakeFromImage(base64);
+      const data = await identifySnakeFromImage(base64, language);
       if (data.error) {
         setError(data.error);
       } else {
         setResult(data);
       }
     } catch (err) {
-      setError("Failed to analyze image. Please try again.");
+      setError(t.errorIdentify);
     } finally {
       setLoading(false);
     }
@@ -42,20 +44,22 @@ const SnakeIDTool: React.FC = () => {
 
   return (
     <div className="max-w-xl mx-auto p-4">
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-green-100">
-        <div className="p-4 text-center bg-green-50 border-b border-green-100">
-          <h2 className="text-xl font-serif font-bold text-green-900">Instant Identification</h2>
-          <p className="text-green-700 text-[11px] mt-1">Safe distance is key! Use your zoom.</p>
+      <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-green-50">
+        <div className="p-6 text-center bg-green-50/50 border-b border-green-100">
+          <h2 className="text-2xl font-serif font-bold text-green-900">{t.instantID}</h2>
+          <p className="text-green-700 text-xs mt-1">{t.zoomAdvice}</p>
         </div>
 
         <div className="p-6">
           {!image ? (
             <div 
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-green-200 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-green-400 transition group"
+              className="border-2 border-dashed border-green-200 rounded-3xl p-12 flex flex-col items-center justify-center cursor-pointer hover:border-green-400 hover:bg-green-50 transition-all group"
             >
-              <i className="fa-solid fa-camera text-4xl text-green-200 group-hover:text-green-500 mb-3"></i>
-              <p className="text-md font-semibold text-gray-700">Identify Photo</p>
+              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                <i className="fa-solid fa-camera"></i>
+              </div>
+              <p className="text-lg font-bold text-gray-700">{t.identifyPhoto}</p>
               <input 
                 type="file" 
                 ref={fileInputRef} 
@@ -66,64 +70,63 @@ const SnakeIDTool: React.FC = () => {
               />
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="relative rounded-lg overflow-hidden h-48 bg-gray-50 flex items-center justify-center">
-                <img src={image} alt="Uploaded" className="max-h-full max-w-full object-contain" />
+            <div className="space-y-6">
+              <div className="relative rounded-3xl overflow-hidden aspect-square bg-gray-50 border border-gray-100 shadow-inner">
+                <img src={image} alt="Uploaded" className="w-full h-full object-cover" />
                 <button 
                   onClick={() => { setImage(null); setResult(null); setError(null); }}
-                  className="absolute top-2 right-2 bg-black/40 text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/70 transition"
+                  className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/60 transition"
                 >
                   <i className="fa-solid fa-xmark"></i>
                 </button>
               </div>
 
               {loading && (
-                <div className="flex flex-col items-center py-4">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mb-2"></div>
-                  <p className="text-green-800 text-xs font-medium">Consulting our experts...</p>
+                <div className="flex flex-col items-center py-8">
+                  <div className="animate-spin rounded-full h-10 w-10 border-4 border-green-600 border-t-transparent mb-4"></div>
+                  <p className="text-green-800 text-sm font-bold animate-pulse">{t.consulting}</p>
                 </div>
               )}
 
               {error && (
-                <div className="bg-red-50 border-l-4 border-red-500 p-3 rounded text-xs">
+                <div className="bg-red-50 border border-red-100 p-4 rounded-2xl text-sm flex items-start space-x-3">
+                  <i className="fa-solid fa-circle-exclamation text-red-500 mt-0.5"></i>
                   <p className="text-red-700 font-medium">{error}</p>
                 </div>
               )}
 
               {result && (
-                <div className="space-y-3 animate-in fade-in duration-300">
+                <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-lg font-bold text-gray-900 leading-tight">{result.species}</h3>
-                      <p className="text-[11px] italic text-gray-400">{result.scientificName}</p>
+                      <h3 className="text-2xl font-bold text-gray-900 leading-tight">{result.species}</h3>
+                      <p className="text-sm italic text-gray-400">{result.scientificName}</p>
                     </div>
-                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
-                      result.dangerLevel === 'Harmless' ? 'bg-green-100 text-green-700' : 
-                      result.dangerLevel === 'Caution Required' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>
+                    <span className="px-3 py-1 bg-green-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
                       {result.dangerLevel}
                     </span>
                   </div>
                   
-                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 text-[12px] leading-relaxed text-gray-600">
-                    <h4 className="font-bold text-gray-700 mb-0.5 text-[10px] uppercase">Analysis</h4>
-                    {result.description}
-                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                      <h4 className="font-black text-gray-400 mb-2 text-[10px] uppercase tracking-[0.2em]">{t.analysis}</h4>
+                      <p className="text-sm leading-relaxed text-gray-700">{result.description}</p>
+                    </div>
 
-                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 text-[12px] leading-relaxed text-blue-700">
-                    <h4 className="font-bold text-blue-800 mb-0.5 text-[10px] uppercase flex items-center">
-                      <i className="fa-solid fa-handshake-angle mr-1.5"></i>
-                      Coexistence Advice
-                    </h4>
-                    {result.advice}
+                    <div className="bg-green-50 p-5 rounded-2xl border border-green-100">
+                      <h4 className="font-black text-green-700 mb-2 text-[10px] uppercase tracking-[0.2em] flex items-center">
+                        <i className="fa-solid fa-leaf mr-2"></i>
+                        {t.advice}
+                      </h4>
+                      <p className="text-sm leading-relaxed text-green-800 italic">{result.advice}</p>
+                    </div>
                   </div>
                   
                   <button 
                     onClick={() => { setImage(null); setResult(null); setError(null); }}
-                    className="w-full py-2.5 bg-green-700 text-white rounded-lg text-sm font-bold hover:bg-green-800 transition"
+                    className="w-full py-4 bg-green-900 text-white rounded-2xl font-bold text-sm uppercase shadow-lg shadow-green-900/20 active:scale-95 transition-transform"
                   >
-                    Identify New
+                    {t.identifyNew}
                   </button>
                 </div>
               )}

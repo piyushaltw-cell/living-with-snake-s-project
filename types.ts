@@ -10,10 +10,16 @@ export interface SnakeSpecies {
   id: string;
   name: string;
   scientificName: string;
+  vernacularNames: string;
   dangerLevel: SnakeDanger;
   description: string;
+  keyFeatures: string;
+  averageLength: string;
+  maxLength: string;
   diet: string;
   habitat: string;
+  distribution: string;
+  behaviour: string;
   imageUrl: string;
 }
 
