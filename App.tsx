@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import Home from './components/Home';
 import SnakeIDTool from './components/SnakeIDTool';
 import SnakeLibrary from './components/SnakeLibrary';
-import SnakeWisdom from './components/SnakeWisdom';
+import SafetyResources from './components/SafetyResources';
 import LanguageSelector from './components/LanguageSelector';
 import { Language } from './translations';
 
@@ -38,8 +37,8 @@ const App: React.FC = () => {
         return <SnakeIDTool language={language} />;
       case 'library':
         return <SnakeLibrary language={language} />;
-      case 'mentor':
-        return <SnakeWisdom language={language} />;
+      case 'safety':
+        return <SafetyResources language={language} />;
       default:
         return <Home onNavigate={setActiveTab} language={language} />;
     }

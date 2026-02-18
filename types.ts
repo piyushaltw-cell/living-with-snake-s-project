@@ -1,26 +1,36 @@
+import { Language } from './translations';
 
 export enum SnakeDanger {
-  HARMLESS = 'Harmless',
-  CAUTION = 'Caution Required',
-  VENOMOUS = 'Venomous',
-  DANGEROUS = 'Highly Dangerous'
+  HARMLESS = 'HARMLESS',
+  CAUTION = 'CAUTION',
+  VENOMOUS = 'VENOMOUS',
+  DANGEROUS = 'DANGEROUS'
+}
+
+export interface LocalizedString {
+  en: string;
+  hi: string;
+  kn: string;
+  ta: string;
+  mr: string;
 }
 
 export interface SnakeSpecies {
   id: string;
-  name: string;
+  name: LocalizedString;
   scientificName: string;
-  vernacularNames: string;
+  vernacularNames: LocalizedString;
   dangerLevel: SnakeDanger;
-  description: string;
-  keyFeatures: string;
+  description: LocalizedString;
+  keyFeatures: LocalizedString;
   averageLength: string;
   maxLength: string;
-  diet: string;
-  habitat: string;
-  distribution: string;
-  behaviour: string;
+  diet: LocalizedString;
+  habitat: LocalizedString;
+  distribution: LocalizedString;
+  behaviour: LocalizedString;
   imageUrl: string;
+  iucnStatus: string;
 }
 
 export interface Sighting {

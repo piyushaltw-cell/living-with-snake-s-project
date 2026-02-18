@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Language, translations, LANGUAGES } from '../translations';
 
@@ -38,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, lang
             <button onClick={() => setActiveTab('home')} className={`hover:text-green-200 transition text-sm ${activeTab === 'home' ? 'font-bold border-b-2 border-white' : ''}`}>{t.home}</button>
             <button onClick={() => setActiveTab('identify')} className={`hover:text-green-200 transition text-sm ${activeTab === 'identify' ? 'font-bold border-b-2 border-white' : ''}`}>{t.identify}</button>
             <button onClick={() => setActiveTab('library')} className={`hover:text-green-200 transition text-sm ${activeTab === 'library' ? 'font-bold border-b-2 border-white' : ''}`}>{t.library}</button>
-            <button onClick={() => setActiveTab('mentor')} className={`hover:text-green-200 transition text-sm ${activeTab === 'mentor' ? 'font-bold border-b-2 border-white' : ''}`}>{t.mentor}</button>
+            <button onClick={() => setActiveTab('safety')} className={`hover:text-green-200 transition text-sm ${activeTab === 'safety' ? 'font-bold border-b-2 border-white' : ''}`}>{t.safety}</button>
           </nav>
           
           <button className="md:hidden text-xl" onClick={() => setActiveTab('home')}>
@@ -65,9 +64,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, lang
           <i className="fa-solid fa-book-open text-sm"></i>
           <span className="text-[10px] mt-1 font-bold uppercase tracking-widest">{t.library}</span>
         </button>
-        <button onClick={() => setActiveTab('mentor')} className={`flex flex-col items-center ${activeTab === 'mentor' ? 'text-green-700' : 'text-gray-400'}`}>
-          <i className="fa-solid fa-graduation-cap text-sm"></i>
-          <span className="text-[10px] mt-1 font-bold uppercase tracking-widest">{t.mentor}</span>
+        <button onClick={() => setActiveTab('safety')} className={`flex flex-col items-center ${activeTab === 'safety' ? 'text-green-700' : 'text-gray-400'}`}>
+          <i className="fa-solid fa-shield-heart text-sm"></i>
+          <span className="text-[10px] mt-1 font-bold uppercase tracking-widest">{t.safety}</span>
         </button>
       </footer>
     </div>

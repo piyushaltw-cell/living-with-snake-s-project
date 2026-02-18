@@ -14,7 +14,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ onSelect }) => {
           <i className="fa-solid fa-earth-asia"></i>
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-serif font-bold text-green-900 mb-4">Welcome to Freedomland</h1>
+        <h1 className="text-3xl md:text-4xl font-serif font-bold text-green-900 mb-4">Welcome to Project Living With Snakes</h1>
         <p className="text-gray-500 text-sm md:text-base mb-10 leading-relaxed">
           Choose your preferred language to begin our journey of harmonious coexistence.
         </p>

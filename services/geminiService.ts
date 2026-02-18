@@ -2,8 +2,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Language } from "../translations";
 
+// Initialize the Google GenAI client with the API key from the environment.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
+/**
+ * Identify a snake species from a base64 encoded image and provide localized details.
+ */
 export const identifySnakeFromImage = async (base64Image: string, language: Language = 'en') => {
   const model = 'gemini-3-flash-preview';
   
@@ -46,9 +50,14 @@ export const identifySnakeFromImage = async (base64Image: string, language: Lang
   return JSON.parse(response.text || '{}');
 };
 
-export const getSnakeWisdom = async (history: {role: 'user' | 'bot', text: string}[], language: Language = 'en') => {
-  const model = 'gemini-3-flash-preview';
+/**
+ * Fix: Added getSnakeWisdom to handle chat-like queries about snakes in Freedomland.
+ * Uses gemini-3-pro-preview for complex reasoning and knowledge retrieval.
+ */
+export const getSnakeWisdom = async (history: { role: 'user' | 'bot', text: string }[], language: Language = 'en') => {
+  const model = 'gemini-3-pro-preview';
   
+  // Convert our internal message format to the Gemini contents format.
   const contents = history.map(m => ({
     role: m.role === 'user' ? 'user' : 'model',
     parts: [{ text: m.text }]
@@ -56,12 +65,12 @@ export const getSnakeWisdom = async (history: {role: 'user' | 'bot', text: strin
 
   const response = await ai.models.generateContent({
     model,
-    contents: contents[0]?.role === 'model' ? contents.slice(1) : contents,
+    contents,
     config: {
-      systemInstruction: `You are the Freedomland Snake Mentor. You are a friendly, wise herpetologist. 
-      IMPORTANT: YOU MUST SPEAK AND RESPOND ONLY IN THE LANGUAGE: ${language}.
-      Your mission is to educate the public about snakes, alleviate fear through knowledge, and promote peaceful coexistence. 
-      Always prioritize safety. Freedomland values biodiversity.`,
+      systemInstruction: `You are the "Freedomland Snake Mentor", a world-class herpetologist expert in the snakes of Freedomland. 
+      Your goal is to educate people on how to coexist safely with snakes. 
+      Be wise, patient, and scientific. If someone reports a snake bite, prioritize advising them to seek immediate medical attention at a hospital.
+      Respond strictly in the following language: ${language}.`,
     }
   });
 
