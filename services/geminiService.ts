@@ -2,13 +2,29 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Language } from "../translations";
 
-// Initialize the Google GenAI client with the API key from the environment.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const API_KEY =
+  (process.env.API_KEY as string | undefined) ||
+  (process.env.GEMINI_API_KEY as string | undefined) ||
+  // @ts-expect-error Vite injects import.meta.env at runtime
+  (import.meta?.env?.GEMINI_API_KEY as string | undefined) ||
+  // Common Vite prefix
+  // @ts-expect-error Vite injects import.meta.env at runtime
+  (import.meta?.env?.VITE_GEMINI_API_KEY as string | undefined);
+
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
 /**
  * Identify a snake species from a base64 encoded image and provide localized details.
  */
 export const identifySnakeFromImage = async (base64Image: string, language: Language = 'en') => {
+  if (!ai) {
+    return {
+      error:
+        language === 'hi'
+          ? 'API कुंजी सेट नहीं है। कृपया .env.local में GEMINI_API_KEY जोड़ें।'
+          : 'API key is not set. Add GEMINI_API_KEY in .env.local and restart.',
+    };
+  }
   const model = 'gemini-3-flash-preview';
   
   const prompt = `You are an expert herpetologist in the fictional region of "Freedomland". 
@@ -55,6 +71,11 @@ export const identifySnakeFromImage = async (base64Image: string, language: Lang
  * Uses gemini-3-pro-preview for complex reasoning and knowledge retrieval.
  */
 export const getSnakeWisdom = async (history: { role: 'user' | 'bot', text: string }[], language: Language = 'en') => {
+  if (!ai) {
+    return language === 'hi'
+      ? 'कृपया .env.local में GEMINI_API_KEY सेट करें और ऐप रीस्टार्ट करें।'
+      : 'Please set GEMINI_API_KEY in .env.local and restart the app.';
+  }
   const model = 'gemini-3-pro-preview';
   
   // Convert our internal message format to the Gemini contents format.
