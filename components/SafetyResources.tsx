@@ -19,14 +19,14 @@ const SafetyResources: React.FC<{ language: Language }> = ({ language }) => {
       icon: "fa-solid fa-boot",
       title: "Wear Protective Gear",
       desc: "Always wear boots and long trousers when walking in long grass or forested areas.",
-      image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&q=80&w=1200"
+      image: "https://s2.r29static.com/bin/entry/464/480x672,85/2102222/image.webp"
     },
     {
       id: "light",
       icon: "fa-solid fa-flashlight",
       title: "Use a Light at Night",
       desc: "Many snakes are active at night. Always carry a torch to avoid stepping on one.",
-      image: "https://images.unsplash.com/photo-1516550130563-ef9369992f96?auto=format&fit=crop&q=80&w=1200"
+      image: "https://media.istockphoto.com/id/157280021/photo/man-in-suit-holding-torch.jpg?s=612x612&w=0&k=20&c=AWDB_mL5CgsVV_ruGfz0GoNXKAUUzeoEnSgZZIN-x9E="
     },
     {
       id: "clear",
@@ -40,27 +40,39 @@ const SafetyResources: React.FC<{ language: Language }> = ({ language }) => {
       icon: "fa-solid fa-circle-stop",
       title: "Freeze and Retreat",
       desc: "If you see a snake, stop moving. Let it pass or move away slowly. Do not attempt to touch it.",
-      image: "https://images.unsplash.com/photo-1629813143301-4439c063165b?auto=format&fit=crop&q=80&w=1200"
+      image: "https://i.ibb.co/609kN454/image-40e34230.png"
     }
   ];
 
   const helplines = [
     {
-      title: "Wildlife Emergency SOS",
-      number: "1800-SNAKE-SOS",
-      sub: "24/7 Rescue & Mitigation",
-      color: "bg-red-600"
+      title: "Ambulance Services",
+      number: "108",
+      sub: "Emergency Medical Support",
+      color: "bg-red-700"
     },
     {
-      title: "Forest Department",
-      number: "1010-GREEN",
-      sub: "Wildlife Reporting Line",
+      title: "Wildlife Rescue & Rehab",
+      number: "1533",
+      sub: "Government Helpline",
       color: "bg-green-700"
     },
     {
-      title: "Community Rescue Network",
-      number: "+91 98765 43210",
-      sub: "Freedomland Volunteer Network",
+      title: "BBMP Wildlife Helpline",
+      number: "9980339880",
+      sub: "Emergency Rescue (9am-10pm)",
+      color: "bg-red-600"
+    },
+    {
+      title: "BBMP Alternative Helpline",
+      number: "09900025370",
+      sub: "Emergency Rescue (9am-10pm)",
+      color: "bg-red-500"
+    },
+    {
+      title: "BBMP Bangalore Office",
+      number: "080-28612767",
+      sub: "General Inquiries",
       color: "bg-blue-600"
     }
   ];
@@ -132,6 +144,20 @@ const SafetyResources: React.FC<{ language: Language }> = ({ language }) => {
             </div>
           ))}
         </div>
+
+        {/* Bannerghatta Specific Info */}
+        <div className="mt-8 p-6 bg-gray-50 rounded-3xl border border-gray-200">
+          <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
+            <i className="fa-solid fa-location-dot mr-2 text-green-700"></i>
+            Bannerghatta Regional Support (BBP)
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed mb-4">
+            For emergencies near Bannerghatta Biological Park, use the BBMP helplines above. For general BBP info, contact the Forest Department. Specialized rescue in this area is also provided by <strong>Sri Shirdi Sai Animal Rescue</strong>.
+          </p>
+          <div className="bg-white p-4 rounded-2xl border border-gray-100 text-xs text-gray-500 italic">
+            Alternative Support: Contact local forest range offices near Bannerghatta for urgent wild animal issues.
+          </div>
+        </div>
       </section>
 
       {/* Post-Bite Advice */}
@@ -157,7 +183,7 @@ const SafetyResources: React.FC<{ language: Language }> = ({ language }) => {
                 <li className="flex items-start"><i className="fa-solid fa-xmark-circle mt-1 mr-3 text-red-400"></i> Do NOT use tourniquets.</li>
                 <li className="flex items-start"><i className="fa-solid fa-xmark-circle mt-1 mr-3 text-red-400"></i> Do NOT cut or suck the wound.</li>
                 <li className="flex items-start"><i className="fa-solid fa-xmark-circle mt-1 mr-3 text-red-400"></i> Do NOT apply ice or chemicals.</li>
-                <li className="flex items-start"><i className="fa-solid fa-xmark-circle mt-1 mr-3 text-red-400"></i> Do NOT waste time with healers.</li>
+                <li className="flex items-start"><i className="fa-solid fa-xmark-circle mt-1 mr-3 text-red-400"></i> Do not try any medical treatment other than anti-venom.</li>
               </ul>
             </div>
           </div>

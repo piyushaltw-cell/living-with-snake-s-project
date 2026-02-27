@@ -355,7 +355,7 @@ export const FREEDOMLAND_SNAKES: SnakeSpecies[] = [
     habitat: { en: 'Agricultural fields, hollow logs, near human dwellings.', hi: 'खेत, पुराने पेड़।', kn: 'ಗದ್ದೆಗಳು, ಕೃಷಿ ಭೂಮಿ.', ta: 'வயல்கள், மரப்பொட்டரைகள்.', mr: 'शेते, जुनी झाडे.' },
     distribution: { en: "Throughout Freedomland.", hi: "हर जगह।", kn: "ಎಲ್ಲಾ ಕಡೆ ಕಂಡುಬರುತ್ತದೆ.", ta: "எங்கும் காணப்படுகிறது.", mr: "सर्वत्र आढळतो." },
     behaviour: { en: "Diurnal/crepuscular; alert; spreads hood and hisses loudly if threatened.", hi: "दिन और शाम को सक्रिय; फन फैलाकर फुफकारता है।", kn: "ಹಗಲು ಮತ್ತು ಮುಸ್ಸಂಜೆಯಲ್ಲಿ ಸಕ್ರಿಯ; ಹೆಡೆ ಎತ್ತಿ ಸಿಸುಗುಟ್ಟುತ್ತದೆ.", ta: "பகலிலும் அந்தி வேளையிலும் செயல்படும்; படம் எடுத்து சீறும்.", mr: "दिवसा आणि सायंकाळी सक्रिय; फणा काढून फुत्कार सोडतो." },
-    imageUrl: 'https://inaturalist-open-data.s3.amazonaws.com/photos/33220034/large.jpeg',
+    imageUrl: 'https://indiabiodiversity.org/files-api/api/get/crop/img//Naja%20naja/911.jpg?h=500',
     iucnStatus: 'Least Concern'
   },
   {
@@ -371,7 +371,7 @@ export const FREEDOMLAND_SNAKES: SnakeSpecies[] = [
     habitat: { en: 'Open fields, rocky terrain, shrublands.', hi: 'खेत, झाड़ियां।', kn: 'ಬಯಲು ಗದ್ದೆಗಳು, ಬಂಡೆಗಳ ಪ್ರದೇಶ.', ta: 'திறந்தவெளி வயல்கள், புதர்கள்.', mr: 'माळरान, झुडपे.' },
     distribution: { en: "Common in the region.", hi: "आम।", kn: "ಎಲ್ಲಾ ಕಡೆ ಸಾಮಾನ್ಯ.", ta: "அதிகம் காணப்படுகிறது.", mr: "सर्वत्र आढळतो." },
     behaviour: { en: "Sluggish but strikes with incredible speed; produces the loudest hiss.", hi: "सुस्त लेकिन तेज हमला करने वाला।", kn: "ಮಂದಗತಿ ಆದರೆ ವೇಗವಾಗಿ ಕಚ್ಚುತ್ತದೆ; ಜೋರಾಗಿ ಸಿಸುಗುಟ್ಟುತ್ತದೆ.", ta: "மந்தமானது; இரவு நேரமானது; மிக சத்தமாக சீறும்.", mr: "संथ पण प्रचंड वेगाने हल्ला करतो; मोठा फुत्कार सोडतो." },
-    imageUrl: 'https://api.indiansnakes.org/u/1686414365666.jpg',
+    imageUrl: 'https://static.toiimg.com/thumb/msid-76646267,width-1280,height-720,resizemode-4/76646267.jpg',
     iucnStatus: 'Least Concern'
   },
   {
