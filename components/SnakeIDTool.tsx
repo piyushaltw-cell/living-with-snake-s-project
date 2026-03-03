@@ -102,9 +102,16 @@ const SnakeIDTool: React.FC<{ language: Language }> = ({ language }) => {
                       <h3 className="text-2xl font-bold text-gray-900 leading-tight">{result.species}</h3>
                       <p className="text-sm italic text-gray-400">{result.scientificName}</p>
                     </div>
-                    <span className="px-3 py-1 bg-green-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                      {result.dangerLevel}
-                    </span>
+                    <div className="flex flex-col items-end gap-2">
+                      <span className="px-3 py-1 bg-green-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+                        {result.dangerLevel}
+                      </span>
+                      {result.confidence && (
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                          Confidence: {result.confidence}%
+                        </span>
+                      )}
+                    </div>
                   </div>
                   
                   <div className="space-y-4">
@@ -119,6 +126,13 @@ const SnakeIDTool: React.FC<{ language: Language }> = ({ language }) => {
                         {t.advice}
                       </h4>
                       <p className="text-sm leading-relaxed text-green-800 italic">{result.advice}</p>
+                    </div>
+
+                    <div className="bg-amber-50 p-4 rounded-2xl border border-amber-100 flex items-start space-x-3">
+                      <i className="fa-solid fa-triangle-exclamation text-amber-600 mt-1"></i>
+                      <p className="text-[11px] text-amber-800 leading-tight font-medium">
+                        {t.emergencyNote}
+                      </p>
                     </div>
                   </div>
                   

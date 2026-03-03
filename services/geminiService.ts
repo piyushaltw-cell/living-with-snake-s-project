@@ -2,42 +2,32 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Language } from "../translations";
 
-const API_KEY =
-  (process.env.API_KEY as string | undefined) ||
-  (process.env.GEMINI_API_KEY as string | undefined) ||
-  // @ts-expect-error Vite injects import.meta.env at runtime
-  (import.meta?.env?.GEMINI_API_KEY as string | undefined) ||
-  // Common Vite prefix
-  // @ts-expect-error Vite injects import.meta.env at runtime
-  (import.meta?.env?.VITE_GEMINI_API_KEY as string | undefined);
-
-const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
+// Initialize the Google GenAI client with the API key from the environment.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
  * Identify a snake species from a base64 encoded image and provide localized details.
  */
 export const identifySnakeFromImage = async (base64Image: string, language: Language = 'en') => {
-  if (!ai) {
-    return {
-      error:
-        language === 'hi'
-          ? 'API कुंजी सेट नहीं है। कृपया .env.local में GEMINI_API_KEY जोड़ें।'
-          : 'API key is not set. Add GEMINI_API_KEY in .env.local and restart.',
-    };
-  }
-  const model = 'gemini-3-flash-preview';
+  const model = 'gemini-3.1-pro-preview';
   
-  const prompt = `You are an expert herpetologist in the fictional region of "Freedomland". 
-  Analyze this image of a snake. 
+  const prompt = `You are a world-class herpetologist expert in snake identification.
+  Analyze this image of a snake with extreme care. 
+  
+  Your identification must be highly accurate as misidentification can lead to dangerous situations.
+  Look for specific scale patterns, head shape, eye pupils, and body morphology.
+  
   IMPORTANT: YOU MUST PROVIDE THE RESPONSE IN THE FOLLOWING LANGUAGE: ${language}.
   
   Provide the result in JSON:
   - species: Common name (in ${language})
   - scientificName: Scientific name
   - dangerLevel: One of "Harmless", "Caution Required", "Venomous", "Highly Dangerous" (in ${language})
-  - description: Short description of behavior and look (in ${language})
-  - advice: How to safely coexist with this specific snake if found in a yard (in ${language}).
-  If it is not a snake, return an error field in ${language}.`;
+  - description: Detailed but concise description of physical features and behavior (in ${language})
+  - advice: Crucial safety advice for coexisting or handling the situation if this snake is encountered (in ${language}).
+  - confidence: A percentage value (0-100) representing your certainty in this identification.
+  
+  If the image does not contain a snake or is too blurry to identify, return an error field explaining why in ${language}.`;
 
   const response = await ai.models.generateContent({
     model,
@@ -57,6 +47,7 @@ export const identifySnakeFromImage = async (base64Image: string, language: Lang
           dangerLevel: { type: Type.STRING },
           description: { type: Type.STRING },
           advice: { type: Type.STRING },
+          confidence: { type: Type.NUMBER },
           error: { type: Type.STRING }
         }
       }
@@ -71,11 +62,6 @@ export const identifySnakeFromImage = async (base64Image: string, language: Lang
  * Uses gemini-3-pro-preview for complex reasoning and knowledge retrieval.
  */
 export const getSnakeWisdom = async (history: { role: 'user' | 'bot', text: string }[], language: Language = 'en') => {
-  if (!ai) {
-    return language === 'hi'
-      ? 'कृपया .env.local में GEMINI_API_KEY सेट करें और ऐप रीस्टार्ट करें।'
-      : 'Please set GEMINI_API_KEY in .env.local and restart the app.';
-  }
   const model = 'gemini-3-pro-preview';
   
   // Convert our internal message format to the Gemini contents format.
